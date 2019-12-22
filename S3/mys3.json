@@ -1,0 +1,100 @@
+{
+
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "create my vpc",
+
+  
+    "Parameters": {
+    
+     
+     "s3bucketname": {
+         "Description": "s3bucketname",
+         "Type": "String"
+     }
+     
+     
+
+      
+      
+      
+      
+      
+      
+    },
+
+    
+    "Resources": {
+        
+
+      
+      "snsTopic": {
+        "Type": "AWS::SNS::Topic",
+        "Properties": {
+          "DisplayName": "",
+          "Subscription": [ {
+            "Endpoint" : "maha4iac@gmail.com",
+            "Protocol" : "email"
+            } ],
+          "TopicName": "s3mahatopic"
+        }
+      },
+      
+      "s3Bucket": {
+        "Type": "AWS::S3::Bucket",
+        "Properties": {
+          "AccessControl": "PublicRead",
+          "BucketName": 
+          { "Ref": "s3bucketname" }
+          ,
+          "VersioningConfiguration" :{ "Status": "Enabled"},
+          "WebsiteConfiguration" :{
+            "ErrorDocument" : "error.html",
+            "IndexDocument" : "index.html"
+             },
+             "LifecycleConfiguration": {
+              "Rules": [
+                {
+                  "Id": "DeleteEverythingInThreeMonths",
+                  "Prefix": "",
+                  "Status": "Enabled",
+                  "ExpirationInDays": "90"
+                }
+              ]
+            }
+          
+
+        }
+      }
+      
+      
+
+    
+      
+    },
+
+
+    
+    "Outputs" : {
+          
+      
+      
+      "bucketname" : {
+        "Value" : 
+        { "Ref": "s3Bucket" }
+        
+      },
+      
+      
+      "snsName" : {
+        "Value" : 
+        { "Ref": "snsTopic" }
+        
+      }
+      
+      
+      
+      
+    }
+    
+
+}
